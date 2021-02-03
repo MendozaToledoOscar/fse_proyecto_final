@@ -13,6 +13,27 @@ def menu():
   print("\t3 - REPRODUCIR MEDIO EXTRAIBLE")
   print("\t9 - SALIR")
 
+def menuUSBMixta(v, m, f):
+  os.system('clear')
+  print("La memoria tiene contenido mixto")
+  print("Selecciona una de las siguientes opciones:")
+  print("\t1 - Reproducir videos")
+  print("\t2 - Reproducir musica")
+  print("\t3 - Reproducir fotos")
+  opcionMixta = input("inserta el numero de la opcion elegida >> ")
+
+  if opcionMixta == '1':
+    reproducirVideos(v)
+  elif opcionMixta == '2':
+    reproducirMusica(m)
+  elif opcionMixta == '3':
+    reproducirFotos(f)
+  else:
+    print("opcion incorrecta") 
+
+  
+
+
 def medioExtraible():
   with os.scandir("/home/luis/Documents/FSEm/proyecto/") as ficheros:
     musica = [fichero.name for fichero in ficheros if fichero.is_file() and fichero.name.endswith('.mp3')]
@@ -38,13 +59,15 @@ def medioExtraible():
     reproducirFotos(fotos)
 
 
-  elif len(musica) != 0 and len(fotos) == 0 and len(musica) == 0:
+  elif len(musica) != 0 and len(fotos) == 0 and len(videos) == 0:
     os.system('clear')
     print("MEMORIA CON MUSICA")
+    reproducirMusica(musica)
 
   else:
     os.system('clear')
     print("MEMORIA MIXTA")
+    menuUSBMixta(videos, musica, fotos)
 
 def reproducirVideos(lista):
   opcionVideo = '1'
@@ -99,6 +122,20 @@ def reproducirFotos(lista):
       time.sleep(1)
   player.stop()
 
+def reproducirMusica(lista):
+  print("Tus Canciones son:")
+  for i in lista:
+    print(i)
+  instance = vlc.Instance()
+  player = instance.media_player_new()
+  for i in lista:
+    media = instance.media_new(i)
+    player.set_media(media)
+    player.play()
+    time.sleep(5)
+    while player.is_playing():
+      time.sleep(1)
+  player.stop()
 
 
 

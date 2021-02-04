@@ -4,7 +4,6 @@ Module implementing MainWindow.
 """
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QMainWindow
-
 from PyQt5.QtGui import QIcon, QFont, QPalette, QImage, QPixmap
 from PyQt5.QtCore import (Qt, QDir, QFile, QFileInfo, QPropertyAnimation, QRect, QAbstractAnimation, QTranslator, QLocale, QLibraryInfo)
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QPushButton, QMessageBox, QFrame, QLabel, QFileDialog)
@@ -14,6 +13,7 @@ import sys
 import os 
 import vlc
 import time 
+import webbrowser
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     """
@@ -44,7 +44,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             player.set_media(media)
             player.toggle_fullscreen()
             player.play()
-            time.sleep(5)
+            time.sleep(2)
             while player.is_playing():
                 time.sleep(1)
         player.stop()
@@ -72,7 +72,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             player.set_media(media)
             player.toggle_fullscreen()
             player.play()
-            time.sleep(5)
+            time.sleep(3)
             while player.is_playing():
                 time.sleep(1)
         player.stop()
@@ -83,9 +83,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Slot documentation goes here.
         """
         with os.scandir( "/home/pi/Documents/FSE/FinalProject/fotos") as ficheros:
-            fotos = [fichero.name for fichero in ficheros if fichero.is_file() and fichero.name.endswith('.jpg')]
+            fotos = [fichero.path for fichero in ficheros if fichero.is_file() and fichero.name.endswith('.jpg')]
         for i in range(len(fotos)):
-            fotos[i]  = "/home/pi/Documents/FSE/FinalProject/fotos/"+ fotos[i]
+            print("Foto " + str(i) + ": "+ str(fotos[i]))
         self.Mostrar_Fotos(fotos)
         
     
@@ -104,9 +104,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Slot documentation goes here.
         """
         with os.scandir("/home/pi/Documents/FSE/FinalProject/musica") as ficheros:
-            musica = [fichero.name for fichero in ficheros if fichero.is_file() and fichero.name.endswith('.mp3')]
+            musica = [fichero.path for fichero in ficheros if fichero.is_file() and fichero.name.endswith('.mp3')]
         for i in range(len(musica)):
-            musica[i]  = "/home/pi/Documents/FSE/FinalProject/musica/"+ musica[i]
+            print("Cancion " + str(i) + ": "+ str(musica[i]))
         self.Mostrar_Musica(musica)
     
     @pyqtSlot()
@@ -114,9 +114,61 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         Slot documentation goes here.
         """
-        with os.scandir( "/media/pi/OSCARMT") as ficheros:
-            fotos = [fichero.name for fichero in ficheros if fichero.is_file() and fichero.name.endswith('.jpg')]
+        with os.scandir("/media/pi") as it:
+            for entry in it:
+                if not entry.name.startswith('.') and entry.is_file():
+                    print(entry.name)
+                    
+        with os.scandir("/media/pi") as ficheros:
+            directorios = [fichero.name for fichero in ficheros if fichero.is_dir()]
+        for i in range(len(directorios)):
+            print("Directorio ["+ str(i) + "]: "+ directorios[i])
+            with os.scandir("/media/pi/" + directorios[i]) as ficheros:
+                fotos = [fichero.path for fichero in ficheros if fichero.is_file() and fichero.name.endswith('.jpg')]
         for i in range(len(fotos)):
-            print(fotos[i])
-            fotos[i]  = "/media/pi/OSCARMT/"+ fotos[i]
-        #self.Mostrar_Fotos(fotos)
+            print("Foto " + str(i) + ": "+ str(fotos[i]))
+        self.Mostrar_Fotos(fotos)
+        
+    @pyqtSlot()
+    def on_m_usb_btn_clicked(self):
+        """
+        Slot documentation goes here.
+        """
+        with os.scandir("/media/pi") as it:
+            for entry in it:
+                if not entry.name.startswith('.') and entry.is_file():
+                    print(entry.name)
+                    
+        with os.scandir("/media/pi") as ficheros:
+            directorios = [fichero.name for fichero in ficheros if fichero.is_dir()]
+        for i in range(len(directorios)):
+            print("Directorio ["+ str(i) + "]: "+ directorios[i])
+            with os.scandir("/media/pi/" + directorios[i]) as ficheros:
+                musica = [fichero.path for fichero in ficheros if fichero.is_file() and fichero.name.endswith('.mp3')]
+        for i in range(len(musica)):
+            print("Foto " + str(i) + ": "+ str(musica[i]))
+        self.Mostrar_Musica(musica)
+    
+    @pyqtSlot()
+    def on_v_usb_btn_clicked(self):
+        """
+        Slot documentation goes here.
+        """
+        nombreVideo, _ = QFileDialog.getOpenFileName(self, "Seleccionar video", "/media/pi/", "Archivos de video (*.mp4)")
+        print("NombreImagen: " + nombreVideo)          
+        self.Mostrar_Video(nombreVideo)
+  
+    @pyqtSlot()
+    def on_spotify_btn_clicked(self):
+        """
+        Slot documentation goes here.
+        """
+        webbrowser.open("https://open.spotify.com/", new=2, autoraise=True)
+  
+    @pyqtSlot()
+    def on_netlfix_btn_clicked(self):
+        """
+        Slot documentation goes here.
+        """
+        webbrowser.open("https://www.netflix.com/", new=2, autoraise=True)
+

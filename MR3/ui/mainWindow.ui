@@ -117,6 +117,9 @@
       <layout class="QVBoxLayout" name="musicLayout">
        <item>
         <widget class="QPushButton" name="m_local_btn">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>Local</string>
          </property>
@@ -124,6 +127,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="m_usb_btn">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>USB</string>
          </property>
@@ -170,6 +176,9 @@
       <layout class="QVBoxLayout" name="foto_Layout">
        <item>
         <widget class="QPushButton" name="f_local_btn">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="autoFillBackground">
           <bool>false</bool>
          </property>
@@ -189,6 +198,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="f_usb_btn">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>USB</string>
          </property>
@@ -232,6 +244,9 @@
       <layout class="QVBoxLayout" name="video_Layout">
        <item>
         <widget class="QPushButton" name="v_local_btn">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>Local</string>
          </property>
@@ -239,6 +254,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="v_usb_btn">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>USB</string>
          </property>
@@ -276,6 +294,9 @@
       <layout class="QVBoxLayout" name="internet_Layout">
        <item>
         <widget class="QPushButton" name="netlfix_btn">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>Netflix</string>
          </property>
@@ -283,6 +304,9 @@
        </item>
        <item>
         <widget class="QPushButton" name="spotify_btn">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
          <property name="text">
           <string>Spotify</string>
          </property>

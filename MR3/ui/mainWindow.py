@@ -56,17 +56,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print("Tus Canciones son:")
         for i in lista:
             print(i)
-        instance = vlc.Instance()
-        player = instance.media_player_new()
-        for i in lista:
-            media = instance.media_new(i)
+        instance = vlc.Instance() #Crear nueva instancia vlc
+        player = instance.media_player_new() #Crear nuevo reproducto
+        # Reproducimos todas las canciones
+        for i in lista: # Para cada cancion en la lista
+            media = instance.media_new(i) 
             player.set_media(media)
             player.toggle_fullscreen()
             player.play()
             time.sleep(2)
             while player.is_playing():
                 time.sleep(1)
-        player.stop()
+        player.stop() #Una vez que terminen las canciones cierra el reproductor
         
     def Mostrar_Video(self, video):
         """
@@ -79,16 +80,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                nombre del video que será reproducido
             
         """
-        instance = vlc.Instance()
-        player = instance.media_player_new()
+        instance = vlc.Instance() #Crear nueva instancia vlc
+        player = instance.media_player_new() #Crear nuevo reproducto
+        # Se reproduce el video seleccionado
         media = instance.media_new(video)
         player.set_media(media)
         player.toggle_fullscreen()
         player.play()
         time.sleep(5)
+        #Espera a que termine el video
         while player.is_playing():
             time.sleep(1)
-        player.stop()
+        player.stop() #Cierra el reproductor
  
     def Mostrar_Fotos(self,  lista):
         """
@@ -105,9 +108,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print("Tus Fotos son:")
         for i in lista:
             print(i)
-        instance = vlc.Instance()
-        player = instance.media_player_new()
-        for i in lista:
+        instance = vlc.Instance() #Crear nueva instancia vlc
+        player = instance.media_player_new() #Crear nuevo reproducto
+        # Reproducimos todas las canciones
+        for i in lista:# Para cada cancion en la lista
             media = instance.media_new(i)
             player.set_media(media)
             player.toggle_fullscreen()
@@ -115,13 +119,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             time.sleep(3)
             while player.is_playing():
                 time.sleep(1)
-        player.stop()
+        player.stop() #Una vez que terminen las canciones cierra el reproductor
   
     @pyqtSlot()
     def on_f_local_btn_clicked(self):
         """
         Al hacer click busca fotos en carpeta local y llama función para reproducirlas
         """
+        #Buscamos en la carpeta local de fotos archivos con extension jpg y los guarda en una lista
         with os.scandir( "/home/pi/Documents/FSE/FinalProject/fotos") as ficheros:
             fotos = [fichero.path for fichero in ficheros if fichero.is_file() and fichero.name.endswith('.jpg')]
         for i in range(len(fotos)):
@@ -133,7 +138,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def on_v_local_btn_clicked(self):
         """
         Al hacer click abre menu para seleccionar video en directorio local y llama función para reproducirlo
-        """ 
+        """
+        #Se guarda en una variable la ruta del archivo local de video seleccionado en el explorador de archivos
         nombreVideo, _ = QFileDialog.getOpenFileName(self, "Seleccionar video", "/home/pi/Documents/FSE/FinalProject/videos", "Archivos de video (*.mp4)")
         print("NombreImagen: " + nombreVideo)          
         self.Mostrar_Video(nombreVideo)
@@ -143,6 +149,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         Al hacer click busca musica en carpeta local y llama función para reproducirla
         """
+        #Buscamos en la carpeta local de musica archivos con extension mp3 y los guarda en una lista
         with os.scandir("/home/pi/Documents/FSE/FinalProject/musica") as ficheros:
             musica = [fichero.path for fichero in ficheros if fichero.is_file() and fichero.name.endswith('.mp3')]
         for i in range(len(musica)):
@@ -154,6 +161,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         Al hacer click busca fotos en usb y llama función para reproducirlas
         """
+        # Busca en cada directorio dentro de media/pi
+        # Ya que en esta ruta se encuentran los medios extraibles
+        # De esta forma sin importar el nombre del USB podrá acceder a el
         with os.scandir("/media/pi") as it:
             for entry in it:
                 if not entry.name.startswith('.') and entry.is_file():
@@ -174,6 +184,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         Al hacer click busca musica en usb y llama función para reproducirla
         """
+        # Busca en cada directorio dentro de media/pi
+        # Ya que en esta ruta se encuentran los medios extraibles
+        # De esta forma sin importar el nombre del USB podrá acceder a el
         with os.scandir("/media/pi") as it:
             for entry in it:
                 if not entry.name.startswith('.') and entry.is_file():
@@ -194,6 +207,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         Al hacer click abre menu para seleccionar video en medio usb y llama función para reproducirlo
         """
+        #Se guarda en una variable la ruta del archivo de video en la usb seleccionado en el explorador de archivos
         nombreVideo, _ = QFileDialog.getOpenFileName(self, "Seleccionar video", "/media/pi/", "Archivos de video (*.mp4)")
         print("NombreImagen: " + nombreVideo)          
         self.Mostrar_Video(nombreVideo)
@@ -213,4 +227,5 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         la libreria WEBBROWSER
         """
         webbrowser.open("https://www.netflix.com/", new=2, autoraise=True)
+
 
